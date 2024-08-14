@@ -36,6 +36,11 @@ pip install jupyter jupyterlab
 ## How to predict masks and save
 <li> You can save the predicted masks using <b>save_masks.ipynb</b>.</li>
 
+# Used networks
+The following two models were used.
+<li><a href="https://github.com/facebookresearch/dinov2">Dinov2</li>
+<li><a href="https://github.com/matterport/Mask_RCNN">Mask R-CNN</li>
+
 # Acknowledgements
 This work was supported by the Institute of Information & communications Technology Planning & Evaluation(IITP) grant funded by the Korea government(MSIT) (No. 2022-0-00682, Development of XR twin technology for the management of chronic skin diseases in the elderly)
 
