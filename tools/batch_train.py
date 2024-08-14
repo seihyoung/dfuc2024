@@ -35,7 +35,7 @@ mask_transform = transforms.Compose([
 
 
 # test_dir: path of the challenge test data
-# weights: you can use pre-trained weights
+# dinov2_weights: you can use pre-trained weights
 # out_dir: output path of results. default = 'outputs'
 def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
                 dino_models=['dinov2_b'],
