@@ -1,4 +1,4 @@
-# DFUC 2024: Self-supervised Instance Segmentation of Diabetic Foot Ulcers
+# Dinov2_Mask R-CNN: Self-supervised Instance Segmentation of Diabetic Foot Ulcers
 
 This work is a part of submission made to [DFUC 2024](https://dfu-challenge.github.io/).
 DFUC 2024 is hosted by [MICCAI 2024](https://conferences.miccai.org/2024/en/), the 27th International Conference on Medical Image Computing and Computer Assisted Intervention.
