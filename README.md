@@ -27,11 +27,15 @@ pip install matplotlib, tqdm, opencv-python
 pip install jupyter jupyterlab
 ````
 
-## Train
+## How to train
 <li> Please refer to the batch training in <b>batch_train.ipynb</b>.</li>
 
-## Scores
+## How to get scores
 <li> You can calculate Dice similarity coefficient(DSC), Intersect over Union (IoU), False Negative Error (FNE) and False Positive Error (FPE) in <b>score.ipynb</b>.</li>
 
-## Predicted Masks
+## How to predict masks and save
 <li> You can save the predicted masks using <b>save_masks.ipynb</b>.</li>
+
+# Acknowledgements
+This work was supported by the Institute of Information & communications Technology Planning & Evaluation(IITP) grant funded by the Korea government(MSIT) (No. 2022-0-00682, Development of XR twin technology for the management of chronic skin diseases in the elderly)
+
