@@ -15,7 +15,7 @@ def ssl_maskrcnn_train(model, train_loader, criterion, optimizer):
     ret_loss = 0.
 
     model.train()
-    loop = tqdm(train_loader, desc='Epoch progress', total=len(train_loader), position=1, leave=False)
+    loop = tqdm(train_loader, desc='Train progress', total=len(train_loader), position=1, leave=False)
     for images, targets in loop:
         images = list(image.to(device) for image in images)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
