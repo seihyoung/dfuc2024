@@ -3,7 +3,7 @@
 This work is a part of submission made to [DFUC 2024](https://dfu-challenge.github.io/).
 DFUC 2024 is hosted by [MICCAI 2024](https://conferences.miccai.org/2024/en/), the 27th International Conference on Medical Image Computing and Computer Assisted Intervention.
 
-## Setting Up a Virtual Environment
+## Setting up a virtual environment
 
 ### Create a virtual environment and activate
 ```bash
@@ -24,7 +24,7 @@ conda install torchvision
 pip install matplotlib tqdm opencv-python jupyter jupyterlab
 ````
 
-## Preparation of the Datasets
+## Preparation of the datasets
 For fine-tuning, we utilized the DFUC2022 dataset, which includes both images and corresponding masks. The dataset was randomly split into two subsets: 80% of the data was used for training, while the remaining 20% was reserved for validation. To ensure reproducibility in model development, we pre-processed and prepared the augmented data beforehand, rather than applying augmentation dynamically during training.
 
 The key parameters for the augmentation process are outlined below. Notably, aspects such as color and brightness were not considered in this augmentation strategy.
@@ -46,6 +46,8 @@ transform = transforms.Compose([
 ## Visualization of the results
 Figure illustrates the results of the implemented pipeline. (a) shows the input image, (The input image was blurred for anonymization purposes.) (b) displays the PCA components of the feature extracted from the Dinov2 backbone, (c) is the ground truth masks, (d) is the predicted masks from the proposed model, 
 and (e) is the XOR calculation between (c) and (d), indicating the similarity between the ground truth and predicted masks.
+
+You can find more diverse visualizations in <b>tools/visualize.py</b>.
 
 <img src="outputs/image.jpg" alt="Alt text" width="600" height="500">
 
