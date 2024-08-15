@@ -39,7 +39,7 @@ mask_transform = transforms.Compose([
 # out_dir: output path of results. default = 'outputs'
 def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
                 dino_models=['dinov2_b'],
-                batchs=[16], epochs=100, dinov2_weights=None):
+                batchs=[16], epochs=100, dinov2_weights=None, save_epoch_freq=20, prefix=''):
 
     if not os.path.exists(test_dir) or not os.path.isdir(test_dir):
         print(f'Error: {test_dir} does not exist.')
@@ -49,6 +49,7 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
         for b in batchs:
             # define variables
             base_name      = f'{m}_{b}batch_{epochs}epoch'
+            base_name      = f'{base_name}_{prefix}' if prefix else base_name
             base_dir       = os.path.join(out_dir, base_name)
             weights_dir    = os.path.join(base_dir, 'weights')
             pred_masks_dir = os.path.join(base_dir, 'pred_masks')
@@ -88,7 +89,7 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
             valid_loader = DataLoader(valid_dataset, batch_size=b, collate_fn=lambda x: tuple(zip(*x)), num_workers=4)
 
             # training
-            with tqdm(total=epochs, desc='Train Progress', unit='epoch', position=0, leave=True) as pbar:
+            with tqdm(total=epochs, desc='Epoch Progress', unit='epoch', position=0, leave=True) as pbar:
                 for epoch in range(epochs):
                 
                     train_loss = ssl_maskrcnn_train(model, train_loader, criterion, optimizer)
@@ -97,8 +98,8 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
                     train_loss_list.append(train_loss)
                     val_loss_list.append(val_loss)
                     
-                    # save info every 20
-                    if (epoch+1) % 20 == 0:
+                    # save info every save_epoch_freq
+                    if (epoch+1) % save_epoch_freq == 0:
                         checkpoint_name = os.path.join(weights_dir, f'model_dfuc_ep_{epoch+1}.pt')
                         torch.save({'epoch': epoch+1, 
                                     'model_state_dict': model.state_dict(), 
