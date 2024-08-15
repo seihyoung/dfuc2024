@@ -26,9 +26,19 @@ pip install matplotlib, tqdm, opencv-python
 ```bash
 pip install jupyter jupyterlab
 ````
+## Preparation of the Datasets
+For fine-tuning, we utilized the DFUC2022 dataset, which includes both images and corresponding masks. The dataset was randomly split into two subsets: 80% of the data was used for training, while the remaining 20% was reserved for validation. To ensure reproducibility in model development, we pre-processed and prepared the augmented data beforehand, rather than applying augmentation dynamically during training. The key parameters for the augmentation process are outlined below. Notably, aspects such as color and brightness were not considered in this augmentation strategy.
+````bash
+transform = transforms.Compose([
+    transforms.RandomHorizontalFlip(p=0.3),
+    transforms.RandomVerticalFlip(p=0.3),
+    transforms.RandomAffine(degrees=25, scale=(0.7, 1.3)),
+])
+````
 
 ## How to train
 <li> Please refer to the batch training in <b>batch_train.ipynb</b>.</li>
+<li> The <b>save_epoch_freq</b> option is employed to save the intermediate model results at every specified epoch frequency. </li>
 
 ## How to get scores
 <li> You can calculate Dice similarity coefficient(DSC), Intersect over Union (IoU), False Negative Error (FNE) and False Positive Error (FPE) in <b>score.ipynb</b>.</li>
