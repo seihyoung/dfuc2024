@@ -25,7 +25,10 @@ pip install matplotlib tqdm opencv-python jupyter jupyterlab
 ````
 
 ## Preparation of the Datasets
-For fine-tuning, we utilized the DFUC2022 dataset, which includes both images and corresponding masks. The dataset was randomly split into two subsets: 80% of the data was used for training, while the remaining 20% was reserved for validation. To ensure reproducibility in model development, we pre-processed and prepared the augmented data beforehand, rather than applying augmentation dynamically during training. The key parameters for the augmentation process are outlined below. Notably, aspects such as color and brightness were not considered in this augmentation strategy.
+For fine-tuning, we utilized the DFUC2022 dataset, which includes both images and corresponding masks. The dataset was randomly split into two subsets: 80% of the data was used for training, while the remaining 20% was reserved for validation. To ensure reproducibility in model development, we pre-processed and prepared the augmented data beforehand, rather than applying augmentation dynamically during training.
+
+The key parameters for the augmentation process are outlined below. Notably, aspects such as color and brightness were not considered in this augmentation strategy.
+
 ````bash
 transform = transforms.Compose([
     transforms.RandomHorizontalFlip(p=0.3),
