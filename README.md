@@ -30,6 +30,8 @@ For fine-tuning, we utilized the DFUC2022 dataset, which includes both images an
 The key parameters for the augmentation process are outlined below. Notably, aspects such as color and brightness were not considered in this augmentation strategy.
 
 ````bash
+import torchvision.transforms as transforms
+
 transform = transforms.Compose([
     transforms.RandomHorizontalFlip(p=0.3),
     transforms.RandomVerticalFlip(p=0.3),
