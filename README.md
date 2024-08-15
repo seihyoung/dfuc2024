@@ -43,6 +43,12 @@ transform = transforms.Compose([
 <li> Please refer to the batch training in <b>batch_train.ipynb</b>.</li>
 <li> The <b>save_epoch_freq</b> option is employed to save the intermediate model results at every specified epoch frequency. </li>
 
+## Visualization of the results
+Figure illustrates the results of the implemented pipeline. (a) shows the input image, (The input image was blurred for anonymization purposes.) (b) displays the PCA components of the feature extracted from the Dinov2 backbone, (c) is the ground truth masks, (d) is the predicted masks from the proposed model, 
+and (e) is the XOR calculation between (c) and (d), indicating the similarity between the ground truth and predicted masks.
+
+<img src="outputs/image.jpg" alt="Alt text" width="600" height="500">
+
 ## How to get scores
 <li> You can calculate Dice similarity coefficient(DSC), Intersect over Union (IoU), False Negative Error (FNE) and False Positive Error (FPE) in <b>score.ipynb</b>.</li>
 
