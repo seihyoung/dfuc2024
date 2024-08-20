@@ -47,7 +47,8 @@ transform = transforms.Compose([
 Figure illustrates the results of the implemented pipeline. (a) shows the input image, (The input image was blurred for anonymization purposes.) (b) displays the PCA components of the feature extracted from the Dinov2 backbone, (c) is the ground truth masks, (d) is the predicted masks from the proposed model, 
 and (e) is the XOR calculation between (c) and (d), indicating the similarity between the ground truth and predicted masks.
 
-You can find more diverse visualizations in <b>tools/visualize.py</b>.
+Please note the <b>visualize.ipynb</b> file for examples.
+You can also find more diverse visualizations in <b>tools/visualize.py</b>.
 
 <img src="outputs/image.jpg" alt="Alt text" width="600" height="500">
 
