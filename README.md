@@ -21,7 +21,7 @@ pip install xformers
 conda install torchvision
 ````
 ```bash
-pip install matplotlib tqdm opencv-python jupyter jupyterlab
+pip install scikit-learn matplotlib tqdm opencv-python jupyter jupyterlab
 ````
 
 ## Preparation of the datasets
