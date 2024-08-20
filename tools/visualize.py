@@ -17,13 +17,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def visualize_image(model, in_image, gt = None, mask_threshold = 0.5, score_threshold = 0.2, img_transform=None, save_plt = False):
     img = Image.open(in_image).convert('RGB').resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
-    transformed_image, preds = ssl_maskrcnn_infer(in_image, model, device, img_transform = img_transform)
+    transformed_image, preds = ssl_maskrcnn_infer(model, device, in_image, img_transform = img_transform)
     if gt is None:
         masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
     else:
         masks = Image.open(gt).resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
 
-    print(preds['scores'])
+    print('scores=', preds['scores'])
     all_preds_masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
     for index, mask in enumerate(preds['masks'].cpu().detach().numpy()):
         if (preds['scores'][index] > score_threshold):
