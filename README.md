@@ -5,7 +5,7 @@ DFUC 2024 is hosted by [MICCAI 2024](https://conferences.miccai.org/2024/en/), t
 
 ## Setting up a virtual environment
 
-### Create a virtual environment and activate
+#### Create a virtual environment and activate
 ```bash
 conda create -n dfuc python=3.8 -y
 ````
@@ -13,7 +13,7 @@ conda create -n dfuc python=3.8 -y
 conda activate dfuc
 ````
 
-### Install required modules
+#### Install required modules
 ```bash
 pip install xformers
 ````
