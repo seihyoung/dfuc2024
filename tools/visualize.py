@@ -26,8 +26,12 @@ def visualize_image(model, in_image, gt = None, mask_threshold = 0.5, score_thre
     print('scores=', preds['scores'])
     all_preds_masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
     for index, mask in enumerate(preds['masks'].cpu().detach().numpy()):
-        if (preds['scores'][index] > score_threshold):
-            all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold) 
+        if type(score_threshold) == list:
+            if score_threshold[0] <= preds['scores'][index] <= score_threshold[1]:
+                all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold)
+        else:
+            if preds['scores'][index] > score_threshold:
+                all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold) 
     xor_masks = np.logical_xor(masks, all_preds_masks)
         
     fig, ax = plt.subplots(1, 4, figsize=(16,4))
@@ -66,8 +70,12 @@ def visualize_images(model, dataset, img_dir, out_dir, mask_threshold = 0.5, sco
         all_preds_masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
         
         for index, mask in enumerate(preds['masks'].cpu().detach().numpy()):
-            if (preds['scores'][index] > score_threshold):
-                all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold) 
+            if type(score_threshold) == list:
+                if score_threshold[0] <= preds['scores'][index] <= score_threshold[1]:
+                    all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold)
+            else:
+                if preds['scores'][index] > score_threshold:
+                    all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold) 
                 
         xor_masks = np.logical_xor(masks, all_preds_masks)
         xor_masks = torchvision.transforms.ToPILImage()(xor_masks).resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS)) 
