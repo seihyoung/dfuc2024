@@ -48,7 +48,6 @@ Figure illustrates the results of the implemented pipeline. (a) shows the input 
 and (e) is the XOR calculation between (c) and (d), indicating the similarity between the ground truth and predicted masks.
 
 Please note the <b>visualize.ipynb</b> file for examples.
-You can also find more diverse visualizations in <b>tools/visualize.py</b>.
 
 <img src="outputs/image.jpg" alt="Alt text" width="600" height="500">
 
