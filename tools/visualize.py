@@ -35,7 +35,7 @@ def visualize_image(model, in_image, gt = None, mask_threshold = 0.5, score_thre
     xor_masks = np.logical_xor(masks, all_preds_masks)
         
     fig, ax = plt.subplots(1, 4, figsize=(16,4))
-    ax[0].imshow(transformed_image)
+    ax[0].imshow(img)
     ax[0].set_title('Original Image')
     ax[1].imshow(masks)
     ax[1].set_title('Mask GT Image')    
@@ -49,52 +49,7 @@ def visualize_image(model, in_image, gt = None, mask_threshold = 0.5, score_thre
         plt.savefig(filename)
         print('Saved result in ' + filename)
     else:
-        plt.show()     
-
-
-def visualize_images(model, dataset, img_dir, out_dir, mask_threshold = 0.5, score_threshold = 0.2, img_transform=None, save_plt = True):
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-
-    for index in range(len(dataset)):
-        image, target = dataset[index]
-        file_idx = str(target['image_id'].item())
-        original_img_path = os.path.join(img_dir, file_idx + '.jpg')
-        print(f'{index+1}: {original_img_path}')
-        origin_img = Image.open(original_img_path).convert('RGB').resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
-        transformed_image, preds = ssl_maskrcnn_infer(original_img_path, model, device, img_transform = img_transform)
-        masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
-        for index, mask in enumerate(target['masks']):
-            masks = np.logical_or(masks, mask)
-        print(preds['scores'])
-        all_preds_masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
-        
-        for index, mask in enumerate(preds['masks'].cpu().detach().numpy()):
-            if type(score_threshold) == list:
-                if score_threshold[0] <= preds['scores'][index] <= score_threshold[1]:
-                    all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold)
-            else:
-                if preds['scores'][index] > score_threshold:
-                    all_preds_masks = np.logical_or(all_preds_masks, mask[0] > mask_threshold) 
-                
-        xor_masks = np.logical_xor(masks, all_preds_masks)
-        xor_masks = torchvision.transforms.ToPILImage()(xor_masks).resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS)) 
-        
-        xor_mask_filename = os.path.join(out_dir, f'{file_idx}_xor_mask.png')
-        fig, ax = plt.subplots(1, 4, figsize=(16,4))
-        ax[0].imshow(transformed_image)
-        ax[0].set_title('Original Image')
-        ax[1].imshow(masks)
-        ax[1].set_title('Mask GT Image')    
-        ax[2].imshow(all_preds_masks)
-        ax[2].set_title('Mask Predication Image')        
-        ax[3].imshow(xor_masks)
-        ax[3].set_title('Mask_Pred XoR Image')   
-        
-        if save_plt is True:
-            plt.savefig(xor_mask_filename)
-        else:
-            plt.show()
+        plt.show()
 
 
 def save_masks(model, img_dir, out_dir, mask_threshold = 0.5, score_threshold = 0.2, alpha = 0.6, img_transform=None):
