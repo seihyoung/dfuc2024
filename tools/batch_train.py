@@ -20,7 +20,6 @@ from tools.visualize import save_masks
 # define device, number of classes, transforms, and directories
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NORMALIZE = False
-numOfClasses = 2
 
 img_transform = transforms.Compose([
     transforms.Resize((14*64,14*64)),
@@ -35,11 +34,12 @@ mask_transform = transforms.Compose([
 
 
 # test_dir: path of the challenge test data
-# dinov2_weights: you can use pre-trained weights
+# weights: you can use pre-trained weights
 # out_dir: output path of results. default = 'outputs'
 def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
                 dino_models=['dinov2_b'],
-                batchs=[16], epochs=100, dinov2_weights=None, save_epoch_freq=20, prefix=''):
+                num_classes = 2,
+                batchs=[16], epochs=100, dinov2_weights=None, save_epoch_freq=20, postfix=''):
 
     if not os.path.exists(test_dir) or not os.path.isdir(test_dir):
         print(f'Error: {test_dir} does not exist.')
@@ -48,8 +48,7 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
     for m in dino_models:
         for b in batchs:
             # define variables
-            base_name      = f'{m}_{b}batch_{epochs}epoch'
-            base_name      = f'{base_name}_{prefix}' if prefix else base_name
+            base_name      = f'{m}_{b}batch_{epochs}epoch_{postfix}' if postfix else f'{m}_{b}batch_{epochs}epoch'
             base_dir       = os.path.join(out_dir, base_name)
             weights_dir    = os.path.join(base_dir, 'weights')
             pred_masks_dir = os.path.join(base_dir, 'pred_masks')
@@ -66,7 +65,7 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
             os.makedirs(pred_masks_dir, exist_ok=True)
     
             # define model
-            model = ssl_maskrcnn(numOfClasses, backbone=m, dinov2_weights=dinov2_weights)
+            model = ssl_maskrcnn(num_classes, backbone=m, dinov2_weights=dinov2_weights)
             model = model.to(device)
     
             # define optimizer and criterion
@@ -82,8 +81,8 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
             val_image_dir   = f'{valid_dir}/image'
             val_mask_dir    = f'{valid_dir}/mask'
             
-            train_dataset = MaskRCNNDataset(img_dir=train_image_dir, mask_dir=train_mask_dir, num_classes = numOfClasses, img_transform=img_transform, mask_transform=mask_transform)
-            valid_dataset = MaskRCNNDataset(img_dir=val_image_dir, mask_dir=val_mask_dir, num_classes = numOfClasses, img_transform=img_transform, mask_transform=mask_transform)
+            train_dataset = MaskRCNNDataset(img_dir=train_image_dir, mask_dir=train_mask_dir, num_classes = num_classes, img_transform=img_transform, mask_transform=mask_transform)
+            valid_dataset = MaskRCNNDataset(img_dir=val_image_dir, mask_dir=val_mask_dir, num_classes = num_classes, img_transform=img_transform, mask_transform=mask_transform)
             
             train_loader = DataLoader(train_dataset, batch_size=b, shuffle=True, collate_fn=lambda x: tuple(zip(*x)), num_workers=4)
             valid_loader = DataLoader(valid_dataset, batch_size=b, collate_fn=lambda x: tuple(zip(*x)), num_workers=4)
@@ -98,7 +97,7 @@ def batch_train(train_dir, valid_dir, test_dir=None, out_dir='outputs',
                     train_loss_list.append(train_loss)
                     val_loss_list.append(val_loss)
                     
-                    # save info every save_epoch_freq
+                    # save info every 20
                     if (epoch+1) % save_epoch_freq == 0:
                         checkpoint_name = os.path.join(weights_dir, f'model_dfuc_ep_{epoch+1}.pt')
                         torch.save({'epoch': epoch+1, 
