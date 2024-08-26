@@ -23,7 +23,7 @@ def visualize_image(model, in_image, gt = None, mask_threshold = 0.5, score_thre
     else:
         masks = Image.open(gt).resize((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
 
-    print('scores=', preds['scores'])
+    print(f'image={in_image}, scores={preds["scores"]}, labels={preds["labels"]}')
     all_preds_masks = np.zeros((BACKBONE_OUT_DIMS, BACKBONE_OUT_DIMS))
     for index, mask in enumerate(preds['masks'].cpu().detach().numpy()):
         if type(score_threshold) == list:
